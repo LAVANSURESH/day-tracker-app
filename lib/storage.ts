@@ -4,7 +4,7 @@
  */
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { JournalEntry, CreateEntryInput, UpdateEntryInput, DayTrackerStats, MoodType } from "@/shared/types";
+import { JournalEntry, CreateJournalInput, UpdateJournalInput, DayTrackerStats, MoodType } from "@/shared/types";
 
 const ENTRIES_KEY = "day_tracker_entries";
 
@@ -51,7 +51,7 @@ export async function getEntriesByDate(date: string): Promise<JournalEntry[]> {
 /**
  * Create a new journal entry
  */
-export async function createEntry(input: CreateEntryInput): Promise<JournalEntry> {
+export async function createEntry(input: CreateJournalInput): Promise<JournalEntry> {
   try {
     const entries = await getAllEntries();
     const newEntry: JournalEntry = {
@@ -74,7 +74,7 @@ export async function createEntry(input: CreateEntryInput): Promise<JournalEntry
 /**
  * Update an existing journal entry
  */
-export async function updateEntry(id: string, updates: UpdateEntryInput): Promise<JournalEntry | null> {
+export async function updateEntry(id: string, updates: UpdateJournalInput): Promise<JournalEntry | null> {
   try {
     const entries = await getAllEntries();
     const index = entries.findIndex((e) => e.id === id);

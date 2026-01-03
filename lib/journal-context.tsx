@@ -4,7 +4,7 @@
  */
 
 import React, { createContext, useContext, useReducer, useCallback, useEffect } from "react";
-import { JournalEntry, CreateEntryInput, UpdateEntryInput, DayTrackerStats } from "@/shared/types";
+import { JournalEntry, CreateJournalInput, UpdateJournalInput, DayTrackerStats } from "@/shared/types";
 import * as storage from "./storage";
 
 interface JournalState {
@@ -26,8 +26,8 @@ type JournalAction =
 interface JournalContextType {
   state: JournalState;
   loadEntries: () => Promise<void>;
-  createEntry: (input: CreateEntryInput) => Promise<JournalEntry>;
-  updateEntry: (id: string, updates: UpdateEntryInput) => Promise<JournalEntry | null>;
+  createEntry: (input: CreateJournalInput) => Promise<JournalEntry>;
+  updateEntry: (id: string, updates: UpdateJournalInput) => Promise<JournalEntry | null>;
   deleteEntry: (id: string) => Promise<boolean>;
   refreshStats: () => Promise<void>;
 }
@@ -96,7 +96,7 @@ export function JournalProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const createEntry = useCallback(async (input: CreateEntryInput) => {
+  const createEntry = useCallback(async (input: CreateJournalInput) => {
     try {
       const newEntry = await storage.createEntry(input);
       dispatch({ type: "ADD_ENTRY", payload: newEntry });
@@ -110,7 +110,7 @@ export function JournalProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const updateEntry = useCallback(async (id: string, updates: UpdateEntryInput) => {
+  const updateEntry = useCallback(async (id: string, updates: UpdateJournalInput) => {
     try {
       const updated = await storage.updateEntry(id, updates);
       if (updated) {

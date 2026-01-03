@@ -47,3 +47,39 @@
 
 - [ ] Create app checkpoint
 - [ ] Publish to Expo
+
+
+## Multi-Category Tracking Enhancement
+
+### Expense Tracking
+- [x] Expense data model and storage
+- [x] Expense entry creation screen
+- [x] Expense list view with category filtering
+- [x] Expense statistics (total spending, category breakdown)
+- [x] Delete expense entries
+
+### Habit Tracking
+- [x] Habit data model and storage
+- [x] Create habit screen with frequency settings
+- [x] Habit checklist view (daily, weekly, monthly)
+- [x] Habit completion tracking
+- [x] Habit statistics (completion rate, streak)
+- [x] Delete habits
+
+### Exercise Tracking
+- [x] Exercise data model and storage
+- [x] Exercise entry creation screen
+- [x] Exercise log view with type filtering
+- [x] Exercise statistics (total duration, calories, frequency)
+- [x] Delete exercise entries
+
+### Navigation & UI
+- [x] Update tab bar to include Expenses, Habits, Exercises tabs
+- [x] Create category icons and styling
+- [x] Add category-specific empty states
+- [x] Icon mapping for all tracking types
+
+### Data Management
+- [x] Updated data models to support multiple categories
+- [x] Separate storage services for each tracking type
+- [x] Category-specific statistics calculations
