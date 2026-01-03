@@ -1,48 +1,111 @@
-import { ScrollView, Text, View, TouchableOpacity } from "react-native";
-
-import { ScreenContainer } from "@/components/screen-container";
-
 /**
- * Home Screen - NativeWind Example
- *
- * This template uses NativeWind (Tailwind CSS for React Native).
- * You can use familiar Tailwind classes directly in className props.
- *
- * Key patterns:
- * - Use `className` instead of `style` for most styling
- * - Theme colors: use tokens directly (bg-background, text-foreground, bg-primary, etc.); no dark: prefix needed
- * - Responsive: standard Tailwind breakpoints work on web
- * - Custom colors defined in tailwind.config.js
+ * Home Screen - Journal Entry List
  */
+
+import { FlatList, View, Pressable, Text, RefreshControl, ActivityIndicator } from "react-native";
+import { useRouter } from "expo-router";
+import { ScreenContainer } from "@/components/screen-container";
+import { useJournal } from "@/lib/journal-context";
+import { EntryCard } from "@/components/entry-card";
+import { useCallback, useState } from "react";
+import * as Haptics from "expo-haptics";
+import { Platform } from "react-native";
+
 export default function HomeScreen() {
+  const router = useRouter();
+  const { state, loadEntries } = useJournal();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await loadEntries();
+    setRefreshing(false);
+  }, [loadEntries]);
+
+  const handleNewEntry = () => {
+    if (Platform.OS !== "web") {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    }
+    router.push("/create-entry");
+  };
+
+  const handleEntryPress = (entryId: string) => {
+    router.push(`/entry-detail/${entryId}`);
+  };
+
+  const sortedEntries = [...state.entries].sort((a, b) => {
+    const dateCompare = new Date(b.date).getTime() - new Date(a.date).getTime();
+    if (dateCompare !== 0) return dateCompare;
+    return b.createdAt - a.createdAt;
+  });
+
   return (
-    <ScreenContainer className="p-6">
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View className="flex-1 gap-8">
-          {/* Hero Section */}
-          <View className="items-center gap-2">
-            <Text className="text-4xl font-bold text-foreground">Welcome</Text>
-            <Text className="text-base text-muted text-center">
-              Edit app/(tabs)/index.tsx to get started
-            </Text>
-          </View>
-
-          {/* Example Card */}
-          <View className="w-full max-w-sm self-center bg-surface rounded-2xl p-6 shadow-sm border border-border">
-            <Text className="text-lg font-semibold text-foreground mb-2">NativeWind Ready</Text>
-            <Text className="text-sm text-muted leading-relaxed">
-              Use Tailwind CSS classes directly in your React Native components.
-            </Text>
-          </View>
-
-          {/* Example Button */}
-          <View className="items-center">
-            <TouchableOpacity className="bg-primary px-6 py-3 rounded-full active:opacity-80">
-              <Text className="text-background font-semibold">Get Started</Text>
-            </TouchableOpacity>
-          </View>
+    <ScreenContainer className="flex-1">
+      <View className="flex-1 flex-col">
+        {/* Header */}
+        <View className="px-6 py-4 border-b border-border">
+          <Text className="text-3xl font-bold text-foreground">Journal</Text>
+          <Text className="text-sm text-muted mt-1">
+            {state.stats.totalEntries} {state.stats.totalEntries === 1 ? "entry" : "entries"}
+          </Text>
         </View>
-      </ScrollView>
+
+        {/* Entry List or Empty State */}
+        {state.loading && !refreshing ? (
+          <View className="flex-1 items-center justify-center">
+            <ActivityIndicator size="large" color="#0a7ea4" />
+          </View>
+        ) : sortedEntries.length === 0 ? (
+          <View className="flex-1 items-center justify-center px-6">
+            <Text className="text-5xl mb-4">📝</Text>
+            <Text className="text-xl font-semibold text-foreground mb-2">No entries yet</Text>
+            <Text className="text-sm text-muted text-center mb-6">
+              Start your journaling journey by creating your first entry.
+            </Text>
+            <Pressable
+              onPress={handleNewEntry}
+              style={({ pressed }) => ({
+                transform: [{ scale: pressed ? 0.97 : 1 }],
+              })}
+              className="bg-primary px-6 py-3 rounded-full"
+            >
+              <Text className="text-background font-semibold">Create Entry</Text>
+            </Pressable>
+          </View>
+        ) : (
+          <FlatList
+            data={sortedEntries}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <EntryCard entry={item} onPress={() => handleEntryPress(item.id)} />
+            )}
+            contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 12 }}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+                tintColor="#0a7ea4"
+              />
+            }
+            ListEmptyComponent={
+              <View className="items-center justify-center py-12">
+                <Text className="text-muted">No entries found</Text>
+              </View>
+            }
+          />
+        )}
+      </View>
+
+      {/* Floating Action Button */}
+      <Pressable
+        onPress={handleNewEntry}
+        style={({ pressed }) => ({
+          transform: [{ scale: pressed ? 0.95 : 1 }],
+        })}
+        className="absolute bottom-6 right-6 bg-primary rounded-full p-4 shadow-lg"
+      >
+        <Text className="text-2xl text-background font-bold">+</Text>
+      </Pressable>
     </ScreenContainer>
   );
 }
