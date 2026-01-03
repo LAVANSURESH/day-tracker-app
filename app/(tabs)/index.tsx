@@ -2,8 +2,8 @@
  * Home Screen - Journal Entry List
  */
 
-import { FlatList, View, Pressable, Text, RefreshControl, ActivityIndicator } from "react-native";
-import { useRouter } from "expo-router";
+import { FlatList, View, Pressable, Text, RefreshControl, ActivityIndicator, TouchableOpacity } from "react-native";
+import { useRouter, Link } from "expo-router";
 import { ScreenContainer } from "@/components/screen-container";
 import { useJournal } from "@/lib/journal-context";
 import { EntryCard } from "@/components/entry-card";
@@ -27,6 +27,13 @@ export default function HomeScreen() {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     }
     router.push("/create-entry");
+  };
+
+  const handleAIJournal = () => {
+    if (Platform.OS !== "web") {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    }
+    router.push("/create-journal-ai");
   };
 
   const handleEntryPress = (entryId: string) => {
@@ -96,16 +103,27 @@ export default function HomeScreen() {
         )}
       </View>
 
-      {/* Floating Action Button */}
-      <Pressable
-        onPress={handleNewEntry}
-        style={({ pressed }) => ({
-          transform: [{ scale: pressed ? 0.95 : 1 }],
-        })}
-        className="absolute bottom-6 right-6 bg-primary rounded-full p-4 shadow-lg"
-      >
-        <Text className="text-2xl text-background font-bold">+</Text>
-      </Pressable>
+      {/* Floating Action Buttons */}
+      <View className="absolute bottom-6 right-6 gap-3">
+        <Pressable
+          onPress={handleAIJournal}
+          style={({ pressed }) => ({
+            transform: [{ scale: pressed ? 0.95 : 1 }],
+          })}
+          className="bg-primary rounded-full p-4 shadow-lg items-center justify-center"
+        >
+          <Text className="text-xl">✨</Text>
+        </Pressable>
+        <Pressable
+          onPress={handleNewEntry}
+          style={({ pressed }) => ({
+            transform: [{ scale: pressed ? 0.95 : 1 }],
+          })}
+          className="bg-primary rounded-full p-4 shadow-lg"
+        >
+          <Text className="text-2xl text-background font-bold">+</Text>
+        </Pressable>
+      </View>
     </ScreenContainer>
   );
 }

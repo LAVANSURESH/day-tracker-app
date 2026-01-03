@@ -1,85 +1,120 @@
-# Day Tracker Journal - Project TODO
+# Day Tracker Journal - AI-Powered Intelligent Tracking
 
-## Core Features
+## Core Concept
+Users write natural language journal entries about their day. The app uses AI to automatically extract and create tracking items for exercises, habits, expenses, and activities.
 
-- [x] Home screen with journal entry list
-- [x] Create new journal entry screen
-- [x] View entry details screen
-- [x] Edit existing journal entry
-- [x] Delete journal entry with confirmation
-- [x] Mood selector (emoji picker)
-- [x] Local storage with AsyncStorage
-- [x] Pull-to-refresh on entry list
-- [x] Empty state message when no entries
-- [x] Date picker for entry date
-- [x] Auto-save indicator
+## Phase 1: AI Extraction System - COMPLETE
 
-## UI/UX
+### Data Models
+- [x] ExtractedItem types (exercises, habits, expenses, activities)
+- [x] ExerciseItem (auto-extracted from journal)
+- [x] HabitItem (auto-extracted from journal)
+- [x] ExpenseItem (auto-extracted from journal)
+- [x] ActivityItem (auto-extracted from journal)
+- [x] Extraction metadata and confidence scoring
 
-- [x] Tab bar navigation (Home, Statistics, Settings)
-- [x] Settings screen with theme toggle
-- [x] Statistics/insights screen with mood trends
-- [x] Streak counter (consecutive days journaled)
-- [x] Mood distribution visualization
-- [x] Responsive design for all screen sizes
-- [x] Dark mode support
+### AI Integration
+- [x] Backend LLM endpoint for text extraction
+- [x] Extraction prompt templates with JSON schema
+- [x] Extraction request/response handling
+- [x] Confidence scoring for extracted items (0-1 scale)
+- [x] Error handling for failed extractions
+- [x] Mood extraction from journal text
+
+## Phase 2: Journal Entry Creation - COMPLETE
+
+### UI Components
+- [x] Enhanced journal entry screen with AI processing
+- [x] Real-time extraction preview with item counts
+- [x] Loading state during AI processing
+- [x] Extracted items preview before saving
+- [x] Processing time display
+
+### Backend Integration
+- [x] Send journal text to LLM for extraction
+- [x] Parse LLM response and create tracking items
+- [x] Automatic creation of exercises, habits, expenses
+- [x] Handle extraction errors gracefully
+- [x] Filter low-confidence items (below 0.4)
+
+## Phase 3: Auto-Extracted Tracking Display - COMPLETE
+
+### Tracking Screens
+- [x] Exercises tab shows auto-extracted workouts
+- [x] Habits tab shows extracted habit completions
+- [x] Expenses tab shows extracted spending
+- [x] Activities display with mood and tags
+- [x] Extraction confidence scores visible
+
+### Features
+- [x] View extracted items before saving
+- [x] Confidence badges for extracted items
+- [x] Automatic creation of tracking items from journal
+- [x] Two-button FAB (AI Journal + Manual Entry)
+
+## Phase 4: Testing & Refinement - COMPLETE
+
+### Testing
+- [x] TypeScript compilation with no errors
+- [x] Server API endpoints functional
+- [x] Integration between frontend and LLM backend
+- [x] Error handling for extraction failures
+- [x] Data persistence across sessions
+
+### Refinement
+- [x] Optimized prompt engineering for accuracy
+- [x] Confidence scoring for quality filtering
+- [x] Graceful error handling
+- [x] Processing time monitoring
+
+## Phase 5: Polish & Delivery - IN PROGRESS
+
+### UI/UX
+- [x] Loading indicators during extraction
+- [x] Clear feedback when items are extracted
+- [x] Two-button FAB for quick access
+- [x] Empty states for all tracking views
 - [x] Haptic feedback on button press
-- [x] Loading states and animations
 
-## Data Management
+### Documentation
+- [x] Extraction types and data models
+- [x] Backend API documentation
+- [x] Frontend integration examples
 
-- [x] Journal entry data model
-- [x] Local storage schema
-- [x] Data persistence across app sessions
-- [x] Entry list sorting (newest first)
-- [ ] Search/filter entries (optional)
+## Features Summary
 
-## Polish & Testing
+### Intelligent Journaling
+- Natural language journal entry creation
+- AI-powered extraction of activities, habits, expenses, exercises
+- Confidence scoring (0-1) for each extracted item
+- Low-confidence items filtered out automatically
+- Mood detection from journal text
 
-- [x] End-to-end flow testing
-- [x] Error handling and validation
-- [x] Keyboard handling on text inputs
-- [x] Accessibility testing (contrast, touch targets)
-- [x] Performance optimization for large entry lists
-- [x] App icon and branding
+### Automatic Tracking
+- Exercises automatically logged with duration, distance, intensity
+- Habits automatically created and marked as completed
+- Expenses automatically categorized and tracked
+- Activities tagged with mood and custom tags
 
-## Deployment
+### Multi-Category Tracking
+- Journal entries with full text storage
+- Expenses with 7 categories (food, transport, entertainment, utilities, health, shopping, other)
+- Habits with frequency settings (daily, weekly, monthly)
+- Exercises with type, duration, distance, calories
+- Statistics dashboard for all categories
 
-- [ ] Create app checkpoint
-- [ ] Publish to Expo
-
-
-## Multi-Category Tracking Enhancement
-
-### Expense Tracking
-- [x] Expense data model and storage
-- [x] Expense entry creation screen
-- [x] Expense list view with category filtering
-- [x] Expense statistics (total spending, category breakdown)
-- [x] Delete expense entries
-
-### Habit Tracking
-- [x] Habit data model and storage
-- [x] Create habit screen with frequency settings
-- [x] Habit checklist view (daily, weekly, monthly)
-- [x] Habit completion tracking
-- [x] Habit statistics (completion rate, streak)
-- [x] Delete habits
-
-### Exercise Tracking
-- [x] Exercise data model and storage
-- [x] Exercise entry creation screen
-- [x] Exercise log view with type filtering
-- [x] Exercise statistics (total duration, calories, frequency)
-- [x] Delete exercise entries
-
-### Navigation & UI
-- [x] Update tab bar to include Expenses, Habits, Exercises tabs
-- [x] Create category icons and styling
-- [x] Add category-specific empty states
-- [x] Icon mapping for all tracking types
+### User Interface
+- 6-tab navigation (Journal, Expenses, Habits, Exercises, Statistics, Settings)
+- Two-button FAB for quick access (AI Journal + Manual Entry)
+- Real-time extraction preview
+- Confidence badges on extracted items
+- Empty states for all screens
+- Dark mode support
+- Haptic feedback on interactions
 
 ### Data Management
-- [x] Updated data models to support multiple categories
-- [x] Separate storage services for each tracking type
-- [x] Category-specific statistics calculations
+- Local AsyncStorage for all data
+- Extraction metadata stored with entries
+- Processing time tracking
+- Error handling and recovery
+- Data persistence across sessions
